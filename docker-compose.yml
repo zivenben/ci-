@@ -1,0 +1,17 @@
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    healthcheck: {"CMD_SHELL", "mysqladmin ping -h localhost || exit 1"}
+      interval: 5s
+      timeout: 3s
+      retries: 3
+  app:
+    build: .
+    depends_on:
+      db:
+        conditions: service_healthy
+    environment:
+      APP_ENV: ${APP_ENV}

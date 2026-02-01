@@ -1,0 +1,14 @@
+name: CI
+on: [push]
+jobs:
+  run:
+    runs_on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: create env
+        run: |
+          echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" > .env
+          echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE}}" >> .env
+          echo "APP_ENV=${{ secrets.APP_ENV}}" >> .env
+      - name: run compose
+        run: docker compose up -d
